@@ -13,3 +13,7 @@ exports.insertUser = async function (req, res) {
     await oracleService(res, INSERT, values, optionCommit);
     
 };
+
+exports.redirectUser = async function(req, res) {
+    res.redirect('https://localhost:4200/banks');
+}
