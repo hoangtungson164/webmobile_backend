@@ -12,5 +12,6 @@ router.get('/banks', BankController.getAllBank);
 router.get('/banks/:id/consent', BankController.getAllConsensus);
 router.get('/banks/:id/report', BankController.getAllReport);
 router.post('/insertUser', UserController.insertUser);
+router.post('/CIC_MACR_RQST', UserController.insertSCRLog);
 
 module.exports = router
