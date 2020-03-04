@@ -15,7 +15,7 @@ exports.insertUser = async function (req, res) {
 };
 
 exports.redirectUser = async function(req, res) {
-    res.redirect('https://localhost:4200/banks');
+    res.redirect(req.body.url + '/banks');
 }
 
 exports.insertINQLog = async function (req, res) {
