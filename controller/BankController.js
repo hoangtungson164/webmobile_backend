@@ -2,7 +2,7 @@ const oracledb = require('oracledb');
 const oracleService = require('../service/oracelQuery.service');
 
 var optionSelect = { outFormat: oracledb.OUT_FORMAT_OBJECT };
-var params = {}
+var params = {};
 
 
 exports.getAllBank = async function (req, res) {
@@ -15,11 +15,11 @@ exports.getAllBank = async function (req, res) {
 };
 
 exports.getAllConsensus = async function (req, res) {
-    let SELECT = "SELECT TO_CHAR(COLLECTION), TO_CHAR(DATA_USING), TO_CHAR(PROVIDING) FROM TB_CONSENT_TYPE";
+    let SELECT = "SELECT TO_CHAR(COLLECTION), TO_CHAR(DATA_USING), TO_CHAR(PROVIDING), TO_CHAR(COLLECTION_VI), TO_CHAR(DATA_USING_VI), TO_CHAR(PROVIDING_VI) FROM TB_CONSENT_TYPE";
     let WHERE = " WHERE CUST_GB = " + "'" + req.params.id + "'";
     let sql = SELECT + WHERE;
     await oracleService(res, sql, params, optionSelect);
-}
+};
 
 exports.getAllReport = async function (req, res) {
     let SELECT = "SELECT*FROM TB_REPORT";
@@ -27,5 +27,5 @@ exports.getAllReport = async function (req, res) {
     let WHERE = " WHERE TB_CUST_REPORT.CUST_GB = " + "'" + req.params.id + "'";
     let sql = SELECT + JOIN + WHERE;
     await oracleService(res, sql, params, optionSelect);
-}
+};
 
