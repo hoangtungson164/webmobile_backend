@@ -4,9 +4,10 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-var BankController = require('../controller/BankController')
-var UserController = require('../controller/UserController')
+var BankController = require('../controller/BankController');
+var UserController = require('../controller/UserController');
 
+router.get('/checkPhoneNumber', UserController.checkExistPhoneNumber);
 router.get('/', UserController.redirectUser);
 router.get('/banks', BankController.getAllBank);
 router.get('/banks/:id/consent', BankController.getAllConsensus);
@@ -14,5 +15,6 @@ router.get('/banks/:id/report', BankController.getAllReport);
 router.post('/insertUser', UserController.insertUser);
 router.post('/insertINQLog', UserController.insertINQLog);
 router.post('/insertSCRPlog', UserController.insertSCRPLog);
+router.put('/updateIdAndPwScrapLog', UserController.updateIdAndPWScapLog);
 
 module.exports = router
