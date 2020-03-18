@@ -17,31 +17,35 @@ exports.insertUser = async function (req, res) {
     
 };
 
-exports.checkExistPhoneNumber = async function(req, res) {
+exports.checkExistPhoneNumberAndCustCD = async function(req, res) {
   let phoneNumber = req.query.phoneNumber;
+  let custCD = req.query.custCD;
 
   let SQL_SELECT = "SELECT NICE_SSIN_ID ";
   let SQL_FROM = "FROM TB_SCRPLOG ";
-  let SQL_WHERE = "WHERE TEL_NO_MOBILE = :phoneNumber ";
+  let SQL_WHERE = "WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD = :custCD ";
   let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.INQ_DTIM DESC `;
   let sql = SQL_SELECT + SQL_FROM + SQL_WHERE + SQL_ORDER_BY;
   let params = {
-    phoneNumber
+    phoneNumber,
+      custCD
   };
     await checkPhoneService(res, sql, params, optionSelect);
 };
 
-exports.updateIdAndPWScapLog = async function(req, res) {
+exports.updateIdAndPWScapLogAndNationID = async function(req, res) {
   let niceSsKey = req.body.niceSsKey;
   let loginID = req.body.loginID;
   let loginPW = req.body.loginPW;
+  let nationID = req.body.nationID;
 
   let optionCommit = {autoCommit: true};
-  let SQL_UPDATE = "UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW WHERE NICE_SSIN_ID = :niceSsKey";
+  let SQL_UPDATE = "UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID WHERE NICE_SSIN_ID = :niceSsKey";
   let params = {
       niceSsKey,
       loginID,
-      loginPW
+      loginPW,
+      nationID
   };
     await oracleService(res, SQL_UPDATE, params, optionCommit);
 };
