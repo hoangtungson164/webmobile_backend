@@ -15,6 +15,6 @@ router.get('/banks/:id/report', BankController.getAllReport);
 router.post('/insertUser', UserController.insertUser);
 router.post('/insertINQLog', UserController.insertINQLog);
 router.post('/insertSCRPlog', UserController.insertSCRPLog);
-router.put('/updateIdAndPwScrapLog', UserController.updateIdAndPWScapLogAndNationID);
+router.put('/updateIdAndPwScrapLog', UserController.updateIdAndPWAndNationIDToSracpLog);
 
 module.exports = router

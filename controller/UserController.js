@@ -33,7 +33,7 @@ exports.checkExistPhoneNumberAndCustCD = async function(req, res) {
     await checkPhoneService(res, sql, params, optionSelect);
 };
 
-exports.updateIdAndPWScapLogAndNationID = async function(req, res) {
+exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
   let niceSsKey = req.body.niceSsKey;
   let loginID = req.body.loginID;
   let loginPW = req.body.loginPW;
