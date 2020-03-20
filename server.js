@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const app = require('./router/app.js');
-const port = process.env.PORT || 3000;
+const config = require('./config/config')
+const port = config.server.port;
 const https = require('https');
 const fss = require('fs');
 const path = require('path');
