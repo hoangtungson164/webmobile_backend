@@ -1,6 +1,9 @@
 const oracleService = require('../service/oracelQuery.service');
 const dateUtil = require('../util/dateConvert.util');
 const common_service = require('../service/common.service');
+const checkPhoneService = require('../service/checkPhone.service');
+const oracledb = require('oracledb');
+var optionSelect = { outFormat: oracledb.OUT_FORMAT_OBJECT };
 
 exports.insertUser = async function (req, res) {
     let username = req.body.username;
@@ -12,6 +15,39 @@ exports.insertUser = async function (req, res) {
     let values = [username, password, '2', bankCode, sysdate];
     await oracleService(res, INSERT, values, optionCommit);
     
+};
+
+exports.checkExistPhoneNumberAndCustCD = async function(req, res) {
+  let phoneNumber = req.query.phoneNumber;
+  let custCD = req.query.custCD;
+
+  let SQL_SELECT = "SELECT NICE_SSIN_ID ";
+  let SQL_FROM = "FROM TB_SCRPLOG ";
+  let SQL_WHERE = "WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD = :custCD ";
+  let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.INQ_DTIM DESC `;
+  let sql = SQL_SELECT + SQL_FROM + SQL_WHERE + SQL_ORDER_BY;
+  let params = {
+    phoneNumber,
+      custCD
+  };
+    await checkPhoneService(res, sql, params, optionSelect);
+};
+
+exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
+  let niceSsKey = req.body.niceSsKey;
+  let loginID = req.body.loginID;
+  let loginPW = req.body.loginPW;
+  let nationID = req.body.nationID;
+
+  let optionCommit = {autoCommit: true};
+  let SQL_UPDATE = "UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID WHERE NICE_SSIN_ID = :niceSsKey";
+  let params = {
+      niceSsKey,
+      loginID,
+      loginPW,
+      nationID
+  };
+    await oracleService(res, SQL_UPDATE, params, optionCommit);
 };
 
 exports.redirectUser = async function(req, res) {
