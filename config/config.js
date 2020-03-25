@@ -16,11 +16,11 @@ var config = {
 	},
 	redis: {
 		host: 'localhost',
-		port: 6379
+		port: 9411
 	},
 	server: {
 		host: '127.0.0.1',
-		port: '3400'
+		port: '3200'
     },
     authprefix: 'Bearer ',
 	jwtExpiresIn: 864000000000,
