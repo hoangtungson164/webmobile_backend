@@ -20,7 +20,7 @@ var config = {
 	},
 	server: {
 		host: '127.0.0.1',
-		port: '3200'
+		port: '3201'
     },
     authprefix: 'Bearer ',
 	jwtExpiresIn: 864000000000,
