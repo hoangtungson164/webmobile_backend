@@ -15,17 +15,29 @@ exports.getAllBank = async function (req, res) {
 };
 
 exports.getAllConsensus = async function (req, res) {
+    let custGb = req.query.custGb;
+    let custCd = req.query.custCd;
     let SELECT = "SELECT TO_CHAR(COLLECTION), TO_CHAR(DATA_USING), TO_CHAR(PROVIDING), TO_CHAR(COLLECTION_VI), TO_CHAR(DATA_USING_VI), TO_CHAR(PROVIDING_VI) FROM TB_CONSENT_TYPE";
-    let WHERE = " WHERE CUST_GB = " + "'" + req.params.id + "'";
+    let WHERE = " WHERE CUST_GB = :custGb AND CUST_CD = :custCd";
     let sql = SELECT + WHERE;
-    await oracleService(res, sql, params, optionSelect);
+    let param = {
+        custGb,
+        custCd
+    };
+    await oracleService(res, sql, param, optionSelect);
 };
 
 exports.getAllReport = async function (req, res) {
+    let custGb = req.query.custGb;
+    let custCd = req.query.custCd;
     let SELECT = "SELECT*FROM TB_REPORT";
     let JOIN = " JOIN TB_CUST_REPORT ON TB_REPORT.REPORT_CODE = TB_CUST_REPORT.REPORT_CODE";
-    let WHERE = " WHERE TB_CUST_REPORT.CUST_GB = " + "'" + req.params.id + "'";
+    let WHERE = " WHERE TB_CUST_REPORT.CUST_GB = :custGb AND TB_CUST_REPORT.CUST_CD = :custCd";
+    let param = {
+        custGb,
+        custCd
+    };
     let sql = SELECT + JOIN + WHERE;
-    await oracleService(res, sql, params, optionSelect);
+    await oracleService(res, sql, param, optionSelect);
 };
 
