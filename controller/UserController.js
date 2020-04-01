@@ -21,7 +21,7 @@ exports.checkExistPhoneNumberAndCustCD = async function(req, res) {
   let phoneNumber = req.query.phoneNumber;
   let custCD = req.query.custCD;
 
-  let SQL_SELECT = "SELECT NICE_SSIN_ID ";
+  let SQL_SELECT = "SELECT NICE_SSIN_ID,SCRP_MOD_CD,SCRP_STAT_CD ";
   let SQL_FROM = "FROM TB_SCRPLOG ";
   let SQL_WHERE = "WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD = :custCD ";
   let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.INQ_DTIM DESC `;
@@ -40,7 +40,7 @@ exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
   let nationID = req.body.nationID;
 
   let optionCommit = {autoCommit: true};
-  let SQL_UPDATE = "UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID WHERE NICE_SSIN_ID = :niceSsKey";
+  let SQL_UPDATE = "UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID , SCRP_MOD_CD = '06' WHERE NICE_SSIN_ID = :niceSsKey";
   let params = {
       niceSsKey,
       loginID,
@@ -51,8 +51,9 @@ exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
 };
 
 exports.redirectUser = async function(req, res) {
-    res.redirect('https://103.112.124.153:4201/banks');
+    // res.redirect('https://103.112.124.153:4201/banks');
     // res.redirect('https://103.112.124.129:4201/banks');
+    res.redirect('https://localhost:4201/banks');
 }
 
 exports.insertINQLog = async function (req, res) {
