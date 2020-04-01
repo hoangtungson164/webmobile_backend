@@ -51,8 +51,8 @@ exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
 };
 
 exports.redirectUser = async function(req, res) {
-    res.redirect('https://103.112.124.153:4201/banks');
-    // res.redirect('https://103.112.124.129:4201/banks');
+    // res.redirect('https://103.112.124.153:4201/banks');
+    res.redirect('https://103.112.124.129:4200/banks');
 }
 
 exports.insertINQLog = async function (req, res) {
