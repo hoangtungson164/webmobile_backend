@@ -28,7 +28,7 @@ exports.checkExistPhoneNumberAndCustCD = async function (req, res) {
     let SQL_SELECT = "SELECT NICE_SSIN_ID,SCRP_MOD_CD,SCRP_STAT_CD,CUST_CD ";
     let SQL_FROM = "FROM TB_SCRPLOG ";
     let SQL_WHERE = `WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD IN (${lisCustCD.map((name, index) => `'${name}'`).join(", ")}) `;
-    let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.INQ_DTIM DESC `;
+    let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.SYS_DTIM DESC `;
     let sql = SQL_SELECT + SQL_FROM + SQL_WHERE + SQL_ORDER_BY;
     let params = {
         phoneNumber,
