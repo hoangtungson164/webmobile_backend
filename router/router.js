@@ -7,7 +7,8 @@ router.use(bodyParser.json());
 var BankController = require('../controller/BankController');
 var UserController = require('../controller/UserController');
 
-router.get('/checkPhoneNumber', UserController.checkExistPhoneNumberAndCustCD);
+router.post('/checkPhoneNumber', UserController.checkExistPhoneNumberAndCustCD);
+router.post('/CheckNiceSsKeyValidToUpdate', UserController.CheckNiceSsKeyValidToUpdate);
 router.get('/', UserController.redirectUser);
 router.get('/banks', BankController.getAllBank);
 router.get('/banks/consent', BankController.getAllConsensus);

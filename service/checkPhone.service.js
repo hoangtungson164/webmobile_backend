@@ -9,9 +9,7 @@ async function checkPhone(res, sql, param, option) {
         let result = await connection.execute(
             sql, param, option);
         if (result.rows !== undefined) {
-            res.status(200).send({data: result.rows});
-        } else {
-            res.status(500).send({message: "Phone Number does not exist/ Không tìm thấy số điện thoại"});
+            return result.rows;
         }
     } catch (err) {
         console.log(err);
