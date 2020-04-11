@@ -5,6 +5,7 @@ const checkPhoneService = require('../service/checkPhone.service');
 const oracledb = require('oracledb');
 var optionSelect = { outFormat: oracledb.OUT_FORMAT_OBJECT };
 const _ = require('lodash');
+const TRY_COUNT = 10;
 
 exports.insertUser = async function (req, res) {
     let username = req.body.username;
@@ -46,34 +47,65 @@ exports.updateIdAndPWAndNationIDToSracpLog = async function(req, res) {
   let loginID = req.body.loginID;
   let loginPW = req.body.loginPW;
   let nationID = req.body.nationID;
+  let tryCount = req.body.tryCount;
+  let rspCode = req.body.rspCode;
+  let scrapModCd = req.body.scrapModCd;
   let listNiceSsKey = [];
 
-    _.forEach(niceSsKey, val => {
-        listNiceSsKey.push(val.NICE_SSIN_ID);
-    });
+  let _TRY_COUNT;
+  if(!rspCode && scrapModCd === '06' )
+      _TRY_COUNT = tryCount;
+  else
+      _TRY_COUNT = ++tryCount;
+
+    // _.forEach(niceSsKey, val => {
+    //     listNiceSsKey.push(val.NICE_SSIN_ID);
+    // });
   let optionCommit = {autoCommit: true};
-  let SQL_UPDATE = `UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID , SCRP_MOD_CD = '06' WHERE NICE_SSIN_ID IN (${listNiceSsKey.map((name, index) => `'${name}'`).join(", ")}) `;
+  if (tryCount < 10 && (!rspCode)) {
+  let SQL_UPDATE = `UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID , SCRP_MOD_CD = '06' , TRY_COUNT = :TRY_COUNT WHERE NICE_SSIN_ID = :niceSsKey `;
   let params = {
+      niceSsKey,
       loginID,
       loginPW,
-      nationID
+      nationID,
+      TRY_COUNT
   };
     await oracleService(res, SQL_UPDATE, params, optionCommit);
+  } else {
+      let SQL_UPDATE = `UPDATE TB_SCRPLOG SET LOGIN_ID = :loginID , LOGIN_PW = :loginPW , NATL_ID = :nationID , SCRP_MOD_CD = '06' , TRY_COUNT = :TRY_COUNT , SCRP_STAT_CD = '01' , RSP_CD = '' WHERE NICE_SSIN_ID = :niceSsKey `;
+      let params = {
+          niceSsKey,
+          loginID,
+          loginPW,
+          nationID,
+          TRY_COUNT: _TRY_COUNT
+      };
+      await oracleService(res, SQL_UPDATE, params, optionCommit);
+  }
 };
 
 exports.CheckNiceSsKeyValidToUpdate = async function (req, res) {
     let listNiceSskey = req.body.listNiceSskey;
-    let SQL_CHECK = `SELECT NICE_SSIN_ID FROM TB_SCRPLOG WHERE NICE_SSIN_ID IN (${listNiceSskey.map((name, index) => `'${name}'`).join(", ")}) AND SCRP_MOD_CD = '05' AND SCRP_STAT_CD = '01' `;
+    let SQL_CHECK = `SELECT NICE_SSIN_ID, SCRP_MOD_CD, SCRP_STAT_CD , CUST_CD , RSP_CD , TRY_COUNT FROM TB_SCRPLOG WHERE NICE_SSIN_ID IN (${listNiceSskey.map((name, index) => `'${name}'`).join(", ")}) AND (SCRP_MOD_CD = '05' AND SCRP_STAT_CD = '01') OR (((RSP_CD = 'F028' OR (RSP_CD is null AND SCRP_MOD_CD = '06' AND SCRP_STAT_CD = '01'))  AND  TRY_COUNT <= 12 AND 10 <= TRY_COUNT)) `;
     let params = {};
     await oracleService(res, SQL_CHECK, params, optionSelect);
-
 };
+
+exports.getRspCodeAndTryCountAfterUpdateIDPW = async function(req, res) {
+    let listNiceSskey = req.body.listNiceSskey;
+    let SQL_CHECK = `SELECT NICE_SSIN_ID, SCRP_MOD_CD, SCRP_STAT_CD, CUST_CD , RSP_CD , TRY_COUNT FROM TB_SCRPLOG WHERE NICE_SSIN_ID IN (${listNiceSskey.map((name, index) => `'${name}'`).join(", ")})  ORDER BY TRY_COUNT ASC  `;
+    let params = {};
+    await oracleService(res, SQL_CHECK, params, optionSelect);
+};
+
+
 
 exports.redirectUser = async function(req, res) {
     // res.redirect('https://103.112.124.153:4201/banks');
     // res.redirect('https://103.112.124.129:4201/banks');
-    // res.redirect('https://localhost:4201/banks');
-    res.redirect('https://103.112.124.129:4200/banks');
+    res.redirect('https://localhost:4201/banks');
+    // res.redirect('https://103.112.124.129:4200/banks');
 };
 
 exports.insertINQLog = async function (req, res) {

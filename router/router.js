@@ -9,6 +9,7 @@ var UserController = require('../controller/UserController');
 
 router.post('/checkPhoneNumber', UserController.checkExistPhoneNumberAndCustCD);
 router.post('/CheckNiceSsKeyValidToUpdate', UserController.CheckNiceSsKeyValidToUpdate);
+router.post('/getRspCodeAndTryCountAfterUpdateIDPW', UserController.getRspCodeAndTryCountAfterUpdateIDPW);
 router.get('/', UserController.redirectUser);
 router.get('/banks', BankController.getAllBank);
 router.get('/banks/consent', BankController.getAllConsensus);
