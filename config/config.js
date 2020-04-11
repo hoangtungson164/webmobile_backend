@@ -20,8 +20,13 @@ var config = {
 	},
 	server: {
 		host: '127.0.0.1',
-		port: '3201'
-    },
+		port: '3200'
+	},
+	URlRedirect: {
+		Localhost:'https://localhost:4201/banks',
+		Testing:'https://103.112.124.153:4201/banks',
+		PROD:'https://103.112.124.129:4200/banks'
+	},
     authprefix: 'Bearer ',
 	jwtExpiresIn: 864000000000,
 	secret: process.env.SECRET,

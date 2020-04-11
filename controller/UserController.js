@@ -6,6 +6,7 @@ const oracledb = require('oracledb');
 var optionSelect = { outFormat: oracledb.OUT_FORMAT_OBJECT };
 const _ = require('lodash');
 const TRY_COUNT = 10;
+const config = require('../config/config');
 
 exports.insertUser = async function (req, res) {
     let username = req.body.username;
@@ -102,10 +103,9 @@ exports.getRspCodeAndTryCountAfterUpdateIDPW = async function(req, res) {
 
 
 exports.redirectUser = async function(req, res) {
-    // res.redirect('https://103.112.124.153:4201/banks');
-    // res.redirect('https://103.112.124.129:4201/banks');
-    res.redirect('https://localhost:4201/banks');
-    // res.redirect('https://103.112.124.129:4200/banks');
+    // res.redirect(config.URlRedirect.Localhost);
+    // res.redirect(config.URlRedirect.Testing);
+    res.redirect(config.URlRedirect.PROD);
 };
 
 exports.insertINQLog = async function (req, res) {
