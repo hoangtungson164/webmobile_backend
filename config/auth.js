@@ -7,13 +7,13 @@ module.exports = {
     // string (not recommended), or it could be prompted for.
     // Alternatively use External Authentication so that no password is
     // needed.
-    password      : process.env.PASSWORD,
-    // password : "admin200%scrp",
+    // password      : process.env.PASSWORD,
+    password : "admin200%scrp",
     // For information on connection strings see:
     // https://oracle.github.io/node-oracledb/doc/api.html#connectionstrings
     // connectString : "localhost/infobox",
-    connectString : "192.168.100.19/xe",
-    // connectString : "10.84.243.126:1522/VNDEV",
+    // connectString : "192.168.100.19/xe",
+    connectString : "10.84.243.126:1522/VNDEV",
     // Setting externalAuth is optional.  It defaults to false.  See:
     // https://oracle.github.io/node-oracledb/doc/api.html#extauth
     // externalAuth  : process.env.NODE_ORACLEDB_EXTERNALAUTH ? true : false
