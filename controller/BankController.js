@@ -8,7 +8,7 @@ var params = {};
 exports.getAllBank = async function (req, res) {
     let SELECT = "SELECT TB_ITCUST.CUST_GB, TB_ITCUST.CUST_CD, TB_ITCUST.CUST_NM_ENG FROM TB_ITCUST";
     let JOIN = " JOIN TB_ITCTRT ON TB_ITCUST.CUST_GB = TB_ITCTRT.CUST_GB AND TB_ITCUST.CUST_CD = TB_ITCTRT.CUST_CD";
-    let WHERE = " WHERE TB_ITCTRT.GDS_CD = 'S1003'";
+    let WHERE = " WHERE TB_ITCTRT.GDS_CD = 'S1003' AND TB_ITCUST.STATUS = 1 ";
     let ORDER = " ORDER BY TB_ITCUST.CUST_NM_ENG";
     let sql = SELECT + JOIN + WHERE + ORDER;
     await oracleService(res, sql, params, optionSelect);
