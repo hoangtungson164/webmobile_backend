@@ -18,3 +18,34 @@ var server = httpsServer.listen(port, function () {
 	console.log('Server running at port', port);
 });
 
+/*
+**Socket
+**********Start****************
+*/
+// let server = https.createServer(credentials, app);
+//socket.io instantiation
+let socketIO = require('socket.io');
+let io = socketIO.listen(httpsServer, { log: false, origins: '*:*' });
+//listen on every connection
+io.on('connection', (socket) => {
+	console.log('socket mobile backend connected');
+
+	//listen on new_message
+	socket.on('mesage_A0001', (message) => {
+		//broadcast the new message
+		io.sockets.emit('mesage_A0001', message);
+	})
+
+	// colse socket
+	socket.on('end', function () {
+		socket.disconnect(0);
+	});
+});
+
+// server.listen(config.server.socket, () => {
+// 	console.log(`started on port: ${config.server.socket}`);
+// });
+
+/*
+************end**************
+*/
