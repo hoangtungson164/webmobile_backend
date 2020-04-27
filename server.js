@@ -25,11 +25,7 @@ var server = httpsServer.listen(port, function () {
 // let server = https.createServer(credentials, app);
 //socket.io instantiation
 let socketIO = require('socket.io');
-const redis = require('socket.io-redis');
-
 let io = socketIO.listen(httpsServer, { log: false, origins: '*:*' });
-io.adapter(redis({ host: 'localhost', port: 9411 }));
-
 //listen on every connection
 io.on('connection', (socket) => {
 	console.log('socket mobile backend connected');
