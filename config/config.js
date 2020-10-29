@@ -24,7 +24,7 @@ var config = {
 	},
 	URlRedirect: {
 		Localhost:'https://localhost:4201/banks',
-		Testing:'https://103.112.124.153:4201/banks',
+		Testing:'https://dev.mobile.infobox.nicegroup.com.vn:4201/banks',
 		PROD:'https://103.112.124.129:4200/banks'
 	},
     authprefix: 'Bearer ',
