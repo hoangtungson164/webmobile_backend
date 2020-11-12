@@ -18,5 +18,6 @@ router.post('/insertUser', UserController.insertUser);
 router.post('/insertINQLog', UserController.insertINQLog);
 router.post('/insertSCRPlog', UserController.insertSCRPLog);
 router.put('/updateIdAndPwScrapLog', UserController.updateIdAndPWAndNationIDToSracpLog);
+router.post('/detectBrowser', UserController.detectUserBrowser);
 
 module.exports = router

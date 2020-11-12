@@ -7,6 +7,7 @@ var optionSelect = { outFormat: oracledb.OUT_FORMAT_OBJECT };
 const _ = require('lodash');
 const TRY_COUNT = 10;
 const config = require('../config/config');
+const browser = require('../detect-browser/bowser');
 
 exports.insertUser = async function (req, res) {
     let username = req.body.username;
@@ -17,7 +18,7 @@ exports.insertUser = async function (req, res) {
     let INSERT = "INSERT INTO TB_ITUSER(USER_NM, USER_PW, INOUT_GB, CUST_CD, SYS_DTIM) VALUES (:USER_NM, :USER_PW, :INOUT_GB, :CUST_CD, :SYS_DTIM)";
     let values = [username, password, '2', bankCode, sysdate];
     await oracleService(res, INSERT, values, optionCommit);
-    
+
 };
 
 exports.checkExistPhoneNumberAndCustCD = async function (req, res) {
@@ -150,4 +151,10 @@ function convertNiceSesionKey(data){
     });
 
     return result;
+}
+
+exports.detectUserBrowser = async function (req, res) {
+    let ua = req.body.ua;
+    const result = browser.Bowser.parse(ua);
+    res.status(200).send(result);
 }
