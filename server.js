@@ -12,9 +12,9 @@ const certificate = fss.readFileSync(path.join(__dad, 'sslcert', 'cert.pem'), 'u
 
 const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
+let http = require('http').Server(app);
 
-
-var server = httpsServer.listen(port, function () {
+var server = http.listen(port, function () {
 	console.log('Server running at port', port);
 });
 
@@ -25,7 +25,7 @@ var server = httpsServer.listen(port, function () {
 // let server = https.createServer(credentials, app);
 //socket.io instantiation
 let socketIO = require('socket.io');
-let io = socketIO.listen(httpsServer, { log: false, origins: '*:*' });
+let io = socketIO.listen(http, { log: false, origins: '*:*' });
 //listen on every connection
 io.on('connection', (socket) => {
 	console.log('socket mobile backend connected');
