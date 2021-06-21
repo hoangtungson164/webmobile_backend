@@ -30,7 +30,7 @@ exports.checkExistPhoneNumberAndCustCD = async function (req, res) {
     });
     let SQL_SELECT = "SELECT NICE_SSIN_ID,SCRP_MOD_CD,SCRP_STAT_CD,CUST_CD ";
     let SQL_FROM = "FROM TB_SCRPLOG ";
-    let SQL_WHERE = `WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD IN (${lisCustCD.map((name, index) => `'${name}'`).join(", ")}) `;
+    let SQL_WHERE = `WHERE TEL_NO_MOBILE = :phoneNumber AND CUST_CD IN (${lisCustCD.map((name, index) => `'${name}'`).join(", ")}) AND GDS_CD = 'S1003' `;
     let SQL_ORDER_BY = `ORDER BY CASE WHEN TB_SCRPLOG.SYS_DTIM IS NOT NULL THEN 1 ELSE 0 END DESC, TB_SCRPLOG.SYS_DTIM DESC `;
     let sql = SQL_SELECT + SQL_FROM + SQL_WHERE + SQL_ORDER_BY;
     let params = {
@@ -96,7 +96,7 @@ exports.CheckNiceSsKeyValidToUpdate = async function (req, res) {
 
 exports.getRspCodeAndTryCountAfterUpdateIDPW = async function(req, res) {
     let listNiceSskey = req.body.listNiceSskey;
-    let SQL_CHECK = `SELECT NICE_SSIN_ID, SCRP_MOD_CD, SCRP_STAT_CD, CUST_CD , RSP_CD , TRY_COUNT FROM TB_SCRPLOG WHERE NICE_SSIN_ID IN (${listNiceSskey.map((name, index) => `'${name}'`).join(", ")})  ORDER BY TRY_COUNT ASC  `;
+    let SQL_CHECK = `SELECT NICE_SSIN_ID, SCRP_MOD_CD, SCRP_STAT_CD, CUST_CD , RSP_CD , TRY_COUNT FROM TB_SCRPLOG WHERE NICE_SSIN_ID IN (${listNiceSskey.map((name, index) => `'${name}'`).join(", ")}) AND GDS_CD = 'S1003'  ORDER BY TRY_COUNT ASC  `;
     let params = {};
     await oracleService(res, SQL_CHECK, params, optionSelect);
 };
